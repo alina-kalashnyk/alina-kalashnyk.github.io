@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic-tac-toe</title>
+</head>
+<body>
+<style>
+    body {
+        background: url(img/background.jpg) repeat;
+            }
+    .cage {
+        position: absolute;
+        display: block;
+        top: 50%;
+        margin-top: -150px;
+        left: 50%;
+        margin-left: -150px;
+        width: 300px;
+        height: 300px;
+        border: 2px dotted darkslateblue;
+        padding: 2px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .cell {
+        width: 100px;
+        height: 100px;
+        border: 1px solid deepskyblue;
+        box-sizing: border-box;
+    }
+    .row {
+        display: flex;
+        flex-direction: row;
+        background-color: lavender;
+        opacity: 0.7;
+    }
+    .zero {
+        background: url(img/icon-о.png) no-repeat center;
+    }
+    .cross {
+        background: url(img/icon-x.png) no-repeat center;
+    }
+    button {
+        border: 2px solid #fff;
+        background: #fff;
+        border-radius: 50%;
+        width: 110px;
+        height: 50px;
+        cursor: pointer;
+        color: cornflowerblue;
+        font-size: 25px;
+        text-align: center;
+        margin: 10px 10px 0;
+        text-shadow: 0 0 10px rgba(59, 206, 66, 0.7);
+    }
+    button:hover {
+        background: lavender;
+        opacity: 1;
+        transition: 0.7s;
+    }
+    #turn {
+        display: block;
+        margin: auto 0;
+        text-align: center;
+        font-size: 50px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(59, 206, 66, 0.7);
+        margin-top: -56px;
+    }
+</style>
+    <div class="cage">
+        <span id="turn">Ходит: O</span>
+        <div class="row">
+            <div class="cell" id="1"></div>
+            <div class="cell" id="2"></div>
+            <div class="cell" id="3"></div>
+        </div>
+        <div class="row">
+            <div class="cell" id="4"></div>
+            <div class="cell" id="5"></div>
+            <div class="cell" id="6"></div>
+        </div>
+        <div class="row">
+            <div class="cell" id="7"></div>
+            <div class="cell" id="8"></div>
+            <div class="cell" id="9"></div>
+        </div>
+        <button id="zero">Nought</button>
+        <button id="cross">Cross</button>
+    </div>
+<script>
+    var sign = 'zero';
+    var countZero = [];
+    var countCross = [];
+    var checkZero = [];
+    var checkCross = [];
+    const winCombs = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+
+document.getElementById('zero').addEventListener('click', function (ev) { sign='zero', document.getElementById('turn').innerHTML = "O"; });
+document.getElementById('cross').addEventListener('click', function (ev) { sign='cross', document.getElementById('turn').innerHTML = "X"; });
+
+
+const cells = document.querySelectorAll('.cell');
+function addSign(e) {
+    this.classList.add(sign);
+    checkZero = Array.from(document.getElementsByClassName('zero'));
+    checkCross = Array.from(document.getElementsByClassName('cross'));
+     if (sign === 'zero') {
+         check_Zero(checkZero);
+
+     } else if(sign === 'cross') {
+         check_Cross(checkCross);
+     }
+}
+
+cells.forEach(cell => cell.addEventListener('click', addSign));
+    function check_Zero(checkZero) {
+             checkZero.forEach(function(element) {
+                countZero.push(parseInt(element.getAttribute('id')));
+             });
+        checkWin(countZero);
+        countZero.length = 0;
+    }
+
+    function check_Cross(checkCross) {
+            checkCross.forEach(function(element) {
+                countCross.push(parseInt(element.getAttribute('id')));
+        });
+        checkWin(countCross);
+        countCross.length = 0;
+    }
+
+    function checkWin(count) {
+        var temp = 0;
+        winCombs.forEach(function (num) {
+            count.forEach(function (n) {
+                if (num.includes(n)) {
+                    temp++;
+                }
+            })
+            if (temp === 3) {
+                document.getElementById('turn').innerHTML = sign.toUpperCase() + ' won';
+                document.body.style.background = "#6495ED url('img/fireworks.gif') repeat top";
+            }
+            temp = 0;
+        });
+    }
+
+</script>
+</body>
+</html>
